@@ -109,13 +109,12 @@ export function HomePage() {
           />
         </div>
 
-        <div className="container mx-auto px-4 relative z-10 my-9 lg:pt-5">
+        <div className="container mx-auto px-4 relative z-10 my-9 pt-5 lg:pt-0">
           <div className="max-w-4xl mx-auto text-center text-white">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="mt-20"
             >
               <span className="inline-block px-4 py-1.5 bg-white/15 backdrop-blur-sm rounded-full text-xs md:text-sm mb-6 border border-white/20">
                 Supporting Families into a Better Future
