@@ -82,7 +82,7 @@ export function Header() {
 
       {/* Main Navigation */}
       <motion.nav
-        className={`transition-all duration-300 ${
+        className={`transition-all duration-300 mb-6 ${
           isScrolled
             ? "bg-white/95 backdrop-blur-md shadow-lg"
             : "bg-white shadow-sm"
