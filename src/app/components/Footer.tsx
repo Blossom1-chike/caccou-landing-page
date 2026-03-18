@@ -1,26 +1,35 @@
-import { Facebook, Instagram, Linkedin, Mail, Phone, MapPin, Heart } from 'lucide-react';
-import { Link, useNavigate } from 'react-router';
-import caccouLogo from 'figma:asset/a6e0109a659701037fd4498c796361385adccd80.png';
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
+  Heart,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router";
+import caccouLogo from "../../assets/logo.png";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
   const navigate = useNavigate();
 
   const handleNavigation = () => {
-    navigate('/');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    navigate("/");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const serviceLinks = [
-    { label: 'Supported Accommodation', path: '/supported-accommodation' },
-    { label: "Children's Home", path: '/childrens-home' },
-    { label: 'Care Genius', path: '/care-genius' },
+    { label: "Supported Accommodation", path: "/supported-accommodation" },
+    { label: "Children's Home", path: "/childrens-home" },
+    { label: "Care Genius", path: "/care-genius" },
   ];
 
   return (
     <footer
       style={{
-        background: 'linear-gradient(135deg, #2D1B4E 0%, #4A1D6B 50%, #3A1560 100%)',
+        background:
+          "linear-gradient(135deg, #2D1B4E 0%, #4A1D6B 50%, #3A1560 100%)",
       }}
       className="text-white"
     >
@@ -43,9 +52,9 @@ export function Footer() {
             </p>
             <div className="flex gap-3">
               {[
-                { icon: Facebook, label: 'Facebook', href: '#' },
-                { icon: Instagram, label: 'Instagram', href: '#' },
-                { icon: Linkedin, label: 'LinkedIn', href: '#' },
+                { icon: Facebook, label: "Facebook", href: "#" },
+                { icon: Instagram, label: "Instagram", href: "#" },
+                { icon: Linkedin, label: "LinkedIn", href: "#" },
               ].map((social) => (
                 <a
                   key={social.label}
@@ -61,7 +70,9 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg mb-5" style={{ fontWeight: 600 }}>Quick Links</h4>
+            <h4 className="text-lg mb-5" style={{ fontWeight: 600 }}>
+              Quick Links
+            </h4>
             <ul className="space-y-3 text-purple-300">
               <li>
                 <Link
@@ -76,7 +87,9 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="text-lg mb-5" style={{ fontWeight: 600 }}>Our Services</h4>
+            <h4 className="text-lg mb-5" style={{ fontWeight: 600 }}>
+              Our Services
+            </h4>
             <ul className="space-y-3 text-purple-300 text-sm">
               {serviceLinks.map((service) => (
                 <li key={service.path}>
@@ -94,7 +107,9 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg mb-5" style={{ fontWeight: 600 }}>Contact Us</h4>
+            <h4 className="text-lg mb-5" style={{ fontWeight: 600 }}>
+              Contact Us
+            </h4>
             <ul className="space-y-4 text-purple-300 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 flex-shrink-0 mt-0.5 text-[#F5A623]" />
