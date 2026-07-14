@@ -82,6 +82,14 @@ export function Footer() {
                   Home
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/careers"
+                  className="hover:text-[#F5A623] transition-colors text-left text-sm"
+                >
+                  Careers
+                </Link>
+              </li>
             </ul>
           </div>
 

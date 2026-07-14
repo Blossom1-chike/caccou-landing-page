@@ -6,9 +6,16 @@ import { Link } from 'react-router';
 import { ArrowLeft, Heart, Clock, Home, MapPin, CheckCircle, Phone, Mail, Users } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useInView } from '../components/hooks/useInView';
+import { usePageMeta } from '../components/hooks/usePageMeta';
 
 export function CareGenius() {
   const { ref: contentRef, isInView: isContentInView } = useInView();
+
+  usePageMeta({
+    title: 'Care Genius',
+    description:
+      'Expert domiciliary care services across Essex for adults 18-65, seniors 65+, and specialised dementia care, supporting independence and dignity at home.',
+  });
 
   const features = [
     'Personal care and hygiene support',

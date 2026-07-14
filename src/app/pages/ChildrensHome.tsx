@@ -6,9 +6,16 @@ import { Link } from 'react-router';
 import { ArrowLeft, Users, Heart, MapPin, CheckCircle, Phone, Mail, Shield } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { useInView } from '../components/hooks/useInView';
+import { usePageMeta } from '../components/hooks/usePageMeta';
 
 export function ChildrensHome() {
   const { ref: contentRef, isInView: isContentInView } = useInView();
+
+  usePageMeta({
+    title: "Children's Home",
+    description:
+      "Exceptional care and support for children aged 11-18 in safe, nurturing home environments, delivered by a dedicated and experienced team.",
+  });
 
   const features = [
     'Experienced and trained care staff',

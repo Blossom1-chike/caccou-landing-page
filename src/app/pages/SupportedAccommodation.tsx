@@ -14,14 +14,21 @@ import {
 } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useInView } from "../components/hooks/useInView";
+import { usePageMeta } from "../components/hooks/usePageMeta";
 
 export function SupportedAccommodation() {
   const { ref: contentRef, isInView: isContentInView } = useInView();
 
+  usePageMeta({
+    title: "Supported Accommodation",
+    description:
+      "Quality 16+ and 18+ supported accommodation for young people looked after by local authorities, operating across the United Kingdom.",
+  });
+
   const features = [
     "Support-only accommodation model",
     "Dedicated support workers available 24/7",
-    "Individual care plans tailored to each resident",
+    "Individual support plans tailored to each resident",
     "Safe, comfortable living environments",
     "Life skills development programs",
     "Educational and employment support",
@@ -111,7 +118,7 @@ export function SupportedAccommodation() {
               <p className="text-lg text-purple-100 leading-relaxed">
                 Supporting young people looked after by local authorities across
                 the United Kingdom with quality accommodation and dedicated
-                care.
+                support.
               </p>
             </motion.div>
 
@@ -156,7 +163,7 @@ export function SupportedAccommodation() {
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 Our support-only model ensures that each young person receives
-                personalized care and guidance while maintaining their
+                personalized support and guidance while maintaining their
                 independence and dignity. We work closely with local authorities
                 to provide comprehensive support tailored to individual needs.
               </p>

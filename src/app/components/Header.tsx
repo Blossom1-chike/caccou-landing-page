@@ -20,6 +20,12 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!location.state?.scrollTo) {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
+
   const handleNavigation = (sectionId: string) => {
     setIsMenuOpen(false);
 
@@ -29,6 +35,11 @@ export function Header() {
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
+      return;
+    }
+
+    if (sectionId === "careers") {
+      navigate("/careers");
       return;
     }
 
@@ -48,6 +59,7 @@ export function Header() {
   const navItems = [
     { label: "Home", id: "home" },
     { label: "Services", id: "services" },
+    { label: "Careers", id: "careers" },
     { label: "Contact", id: "contact" },
   ];
 

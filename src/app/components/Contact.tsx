@@ -1,65 +1,94 @@
-import { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, MessageSquare } from 'lucide-react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Textarea } from './ui/textarea';
-import { toast } from 'sonner';
-import { motion } from 'motion/react';
-import { useInView } from './hooks/useInView';
+import { useState } from "react";
+import { MapPin, Phone, Mail, Clock, Send, MessageSquare } from "lucide-react";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { toast } from "sonner";
+import { motion } from "motion/react";
+import { useInView } from "./hooks/useInView";
+import { submitForm } from "../lib/submitForm";
 
 const contactCards = [
   {
     icon: Phone,
-    title: 'Phone',
-    main: '07459 530293',
-    sub: 'Mon–Fri: 8am – 6pm\nWeekend: On-call support',
-    href: 'tel:+447459530293',
-    color: '#6B2D8B',
+    title: "Phone",
+    main: "07459 530293",
+    sub: "Mon–Fri: 8am – 6pm\nWeekend: On-call support",
+    href: "tel:+447459530293",
+    color: "#6B2D8B",
   },
   {
     icon: Mail,
-    title: 'Email',
-    main: 'info@caccou.co.uk',
+    title: "Email",
+    main: "info@caccou.co.uk",
     sub: "We'll respond within 24 hours",
-    href: 'mailto:info@caccou.co.uk',
-    color: '#E91E63',
+    href: "mailto:info@caccou.co.uk",
+    color: "#E91E63",
   },
   {
     icon: MapPin,
-    title: 'Location',
-    main: 'Harlow, Essex',
-    sub: 'Serving Harlow and surrounding areas',
+    title: "Location",
+    main: "Harlow, Essex",
+    sub: "Serving Harlow and surrounding areas",
     href: undefined,
-    color: '#2E8B57',
+    color: "#2E8B57",
   },
   {
     icon: Clock,
-    title: 'Emergency Care',
-    main: '24/7 Support',
-    sub: 'For urgent care needs, contact us anytime',
-    href: 'tel:+447459530293',
-    color: '#F5A623',
+    title: "Emergency Care",
+    main: "24/7 Support",
+    sub: "For urgent care needs, contact us anytime",
+    href: "tel:+447459530293",
+    color: "#F5A623",
   },
 ];
 
 export function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: '',
+    name: "",
+    email: "",
+    phone: "",
+    service: "",
+    message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { ref, isInView } = useInView();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', phone: '', service: '', message: '' });
+    setIsSubmitting(true);
+    try {
+      await submitForm({
+        subject: `New enquiry from ${formData.name}`,
+        fromName: formData.name,
+        replyTo: formData.email,
+        fields: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          service: formData.service,
+          message: formData.message,
+        },
+      });
+      toast.success(
+        "Thank you for your message! We will get back to you soon.",
+      );
+      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again or call us directly.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     setFormData({
       ...formData,
@@ -93,8 +122,8 @@ export function Contact() {
             Get in Touch
           </h2>
           <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed px-4">
-            Have questions about our care services? We're here to help. Contact us
-            today for a free, no-obligation consultation.
+            Have questions about our care services? We're here to help. Contact
+            us today for a free, no-obligation consultation.
           </p>
         </motion.div>
 
@@ -107,7 +136,11 @@ export function Contact() {
                 key={card.title}
                 initial={{ opacity: 0, y: 40, scale: 0.95 }}
                 animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: 'easeOut' }}
+                transition={{
+                  duration: 0.6,
+                  delay: index * 0.1,
+                  ease: "easeOut",
+                }}
                 whileHover={{ y: -6, scale: 1.02 }}
               >
                 <div className="bg-white rounded-2xl p-5 md:p-6 h-full shadow-sm border border-purple-50 hover:shadow-lg transition-all duration-300">
@@ -119,7 +152,10 @@ export function Contact() {
                   >
                     <Icon className="h-6 w-6" style={{ color: card.color }} />
                   </motion.div>
-                  <h4 className="text-[#2D1B4E] mb-2 text-base md:text-lg" style={{ fontWeight: 600 }}>
+                  <h4
+                    className="text-[#2D1B4E] mb-2 text-base md:text-lg"
+                    style={{ fontWeight: 600 }}
+                  >
                     {card.title}
                   </h4>
                   {card.href ? (
@@ -131,11 +167,16 @@ export function Contact() {
                       {card.main}
                     </a>
                   ) : (
-                    <p className="text-[#2D1B4E] mb-1 text-sm md:text-base" style={{ fontWeight: 500 }}>
+                    <p
+                      className="text-[#2D1B4E] mb-1 text-sm md:text-base"
+                      style={{ fontWeight: 500 }}
+                    >
                       {card.main}
                     </p>
                   )}
-                  <p className="text-xs md:text-sm text-gray-500 whitespace-pre-line">{card.sub}</p>
+                  <p className="text-xs md:text-sm text-gray-500 whitespace-pre-line">
+                    {card.sub}
+                  </p>
                 </div>
               </motion.div>
             );
@@ -147,7 +188,7 @@ export function Contact() {
           className="max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 50, scale: 0.98 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
         >
           <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg overflow-hidden border border-purple-50">
             <div className="grid md:grid-cols-5">
@@ -156,7 +197,7 @@ export function Contact() {
                 className="md:col-span-2 p-6 md:p-8 lg:p-10 text-white flex flex-col justify-center"
                 style={{
                   background:
-                    'linear-gradient(135deg, #4A1D6B 0%, #6B2D8B 50%, #8B3DAB 100%)',
+                    "linear-gradient(135deg, #4A1D6B 0%, #6B2D8B 50%, #8B3DAB 100%)",
                 }}
                 initial={{ opacity: 0, x: -20 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
@@ -168,7 +209,10 @@ export function Contact() {
                 >
                   <MessageSquare className="h-10 w-10 md:h-12 md:w-12 text-[#F5A623] mb-6" />
                 </motion.div>
-                <h3 className="text-xl md:text-2xl mb-3 md:mb-4" style={{ fontWeight: 700 }}>
+                <h3
+                  className="text-xl md:text-2xl mb-3 md:mb-4"
+                  style={{ fontWeight: 700 }}
+                >
                   Send Us a Message
                 </h3>
                 <p className="text-purple-200 text-sm md:text-base leading-relaxed mb-6 md:mb-8">
@@ -198,10 +242,17 @@ export function Contact() {
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6, delay: 0.7 }}
               >
-                <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-4 md:space-y-5"
+                >
                   <div className="grid md:grid-cols-2 gap-5">
                     <div className="space-y-1.5">
-                      <label htmlFor="name" className="text-sm text-gray-700" style={{ fontWeight: 500 }}>
+                      <label
+                        htmlFor="name"
+                        className="text-sm text-gray-700"
+                        style={{ fontWeight: 500 }}
+                      >
                         Full Name *
                       </label>
                       <Input
@@ -216,7 +267,11 @@ export function Contact() {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label htmlFor="phone" className="text-sm text-gray-700" style={{ fontWeight: 500 }}>
+                      <label
+                        htmlFor="phone"
+                        className="text-sm text-gray-700"
+                        style={{ fontWeight: 500 }}
+                      >
                         Phone Number *
                       </label>
                       <Input
@@ -233,7 +288,11 @@ export function Contact() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="email" className="text-sm text-gray-700" style={{ fontWeight: 500 }}>
+                    <label
+                      htmlFor="email"
+                      className="text-sm text-gray-700"
+                      style={{ fontWeight: 500 }}
+                    >
                       Email Address *
                     </label>
                     <Input
@@ -249,7 +308,11 @@ export function Contact() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="service" className="text-sm text-gray-700" style={{ fontWeight: 500 }}>
+                    <label
+                      htmlFor="service"
+                      className="text-sm text-gray-700"
+                      style={{ fontWeight: 500 }}
+                    >
                       Service Required
                     </label>
                     <select
@@ -271,7 +334,11 @@ export function Contact() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="message" className="text-sm text-gray-700" style={{ fontWeight: 500 }}>
+                    <label
+                      htmlFor="message"
+                      className="text-sm text-gray-700"
+                      style={{ fontWeight: 500 }}
+                    >
                       Message *
                     </label>
                     <Textarea
@@ -286,15 +353,19 @@ export function Contact() {
                     />
                   </div>
 
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.03, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
                     <Button
                       type="submit"
                       size="lg"
-                      className="w-full bg-[#6B2D8B] hover:bg-[#4A1D6B] text-white rounded-full shadow-md hover:shadow-lg transition-all py-3 md:py-6"
+                      disabled={isSubmitting}
+                      className="w-full bg-[#6B2D8B] hover:bg-[#4A1D6B] text-white rounded-full shadow-md hover:shadow-lg transition-all py-3 md:py-6 disabled:opacity-70"
                       style={{ fontWeight: 600 }}
                     >
                       <Send className="h-4 w-4 mr-2" />
-                      Send Message
+                      {isSubmitting ? "Sending..." : "Send Message"}
                     </Button>
                   </motion.div>
                 </form>
@@ -308,7 +379,7 @@ export function Contact() {
           className="max-w-4xl mx-auto mt-12 md:mt-14"
           initial={{ opacity: 0, y: 50, scale: 0.98 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
         >
           <div className="bg-white rounded-2xl md:rounded-3xl shadow-lg overflow-hidden border border-purple-50">
             <motion.div
@@ -319,7 +390,10 @@ export function Contact() {
             >
               <div className="flex items-center gap-3">
                 <MapPin className="h-5 w-5 md:h-6 md:w-6 text-[#F5A623]" />
-                <h3 className="text-lg md:text-xl lg:text-2xl text-white" style={{ fontWeight: 700 }}>
+                <h3
+                  className="text-lg md:text-xl lg:text-2xl text-white"
+                  style={{ fontWeight: 700 }}
+                >
                   Find Us in Harlow
                 </h3>
               </div>
@@ -330,7 +404,7 @@ export function Contact() {
             <div className="relative w-full h-[300px] md:h-[400px] lg:h-[450px]">
               <iframe
                 title="Caccou Limited Location - Harlow, Essex"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d39585.64288472573!2d0.07824!3d51.77288!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8a9c3f0f0f0f1%3A0x3b0c3c3c3c3c3c3c!2sHarlow%2C%20UK!5e0!3m2!1sen!2suk!4v1234567890123!5m2!1sen!2suk"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2469.817257945138!2d0.09777787675270364!3d51.7546650926095!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d8994dd37e6125%3A0xfdf736a77272827d!2s28%20Bishopsfield%2C%20Harlow%20CM18%206UJ!5e0!3m2!1sen!2suk!4v1783946738543!5m2!1sen!2suk"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -348,40 +422,49 @@ export function Contact() {
           className="mt-12 md:mt-16 rounded-2xl md:rounded-3xl p-6 md:p-10 lg:p-12 text-center text-white max-w-4xl mx-auto"
           style={{
             background:
-              'linear-gradient(135deg, #4A1D6B 0%, #6B2D8B 50%, #8B3DAB 100%)',
+              "linear-gradient(135deg, #4A1D6B 0%, #6B2D8B 50%, #8B3DAB 100%)",
           }}
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
           animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
+          transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
         >
-          <h3 className="text-xl md:text-2xl lg:text-3xl mb-4 px-4" style={{ fontWeight: 700 }}>
+          <h3
+            className="text-xl md:text-2xl lg:text-3xl mb-4 px-4"
+            style={{ fontWeight: 700 }}
+          >
             Ready to Discuss Your Care Needs?
           </h3>
           <p className="text-sm md:text-base text-purple-200 mb-8 leading-relaxed max-w-2xl mx-auto px-4">
-            Our friendly team is available to answer your questions and arrange a
-            free, no-obligation assessment. We'll work with you to create a
+            Our friendly team is available to answer your questions and arrange
+            a free, no-obligation assessment. We'll work with you to create a
             personalised care plan that meets your specific needs.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center px-4">
-            <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Button
                 size="lg"
                 className="bg-[#F5A623] hover:bg-[#E09000] text-[#2D1B4E] px-6 md:px-8 py-3 rounded-full shadow-md hover:shadow-lg transition-all w-full sm:w-auto"
                 style={{ fontWeight: 600 }}
-                onClick={() => (window.location.href = 'tel:+447459530293')}
+                onClick={() => (window.location.href = "tel:+447459530293")}
               >
                 <Phone className="h-4 w-4 mr-2" />
                 Call Now
               </Button>
             </motion.div>
-            <motion.div whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.95 }}>
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white/60 text-white hover:bg-white hover:text-[#6B2D8B] px-6 md:px-8 py-3 rounded-full transition-all w-full sm:w-auto"
+                className="border-2 border-white/60 hover:bg-white text-[#6B2D8B] px-6 md:px-8 py-3 rounded-full transition-all w-full sm:w-auto"
                 style={{ fontWeight: 600 }}
                 onClick={() =>
-                  (window.location.href = 'mailto:info@caccou.co.uk')
+                  (window.location.href = "mailto:info@caccou.co.uk")
                 }
               >
                 <Mail className="h-4 w-4 mr-2" />

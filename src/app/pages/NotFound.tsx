@@ -3,8 +3,15 @@ import { Footer } from '../components/Footer';
 import { motion } from 'motion/react';
 import { Link } from 'react-router';
 import { Home, ArrowLeft } from 'lucide-react';
+import { usePageMeta } from '../components/hooks/usePageMeta';
 
 export function NotFound() {
+  usePageMeta({
+    title: 'Page Not Found',
+    description: "Sorry, we couldn't find the page you're looking for.",
+    noindex: true,
+  });
+
   return (
     <div className="min-h-screen bg-white flex flex-col" style={{ fontFamily: "'Poppins', sans-serif" }}>
       <Header />

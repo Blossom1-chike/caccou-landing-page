@@ -7,11 +7,18 @@ import { Link, useLocation } from "react-router";
 import { ArrowRight, Home as HomeIcon, Heart, Users } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { useInView } from "../components/hooks/useInView";
+import { usePageMeta } from "../components/hooks/usePageMeta";
 import { useEffect } from "react";
 
 export function HomePage() {
   const { ref: servicesRef, isInView: isServicesInView } = useInView();
   const location = useLocation();
+
+  usePageMeta({
+    title: "Home",
+    description:
+      "Caccou Family Services provides supported accommodation, children's home care, and domiciliary care across Harlow, Essex and the UK. Get in touch for compassionate, professional support.",
+  });
 
   useEffect(() => {
     if (location.state?.scrollTo) {

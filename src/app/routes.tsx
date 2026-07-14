@@ -3,6 +3,7 @@ import { HomePage } from './pages/HomePage';
 import { SupportedAccommodation } from './pages/SupportedAccommodation';
 import { ChildrensHome } from './pages/ChildrensHome';
 import { CareGenius } from './pages/CareGenius';
+import { Careers } from './pages/Careers';
 import { NotFound } from './pages/NotFound';
 
 export const router = createBrowserRouter([
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
   {
     path: '/care-genius',
     Component: CareGenius,
+  },
+  {
+    path: '/careers',
+    Component: Careers,
   },
   {
     path: '*',
